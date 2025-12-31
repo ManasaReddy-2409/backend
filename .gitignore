@@ -1,0 +1,9 @@
+node_modules
+.env
+*.ps1
+*_test.js
+test_*
+seed*
+atlas_setup.js
+DATABASE_SETUP.txt
+ENVIRONMENT.md
