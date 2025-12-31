@@ -60,7 +60,7 @@ mongoose
       if (!adminExists) {
         const admin = new User({
           name: 'Admin User',
-          email: 'admin@local.dev',
+          email: 'admin@helpmeout.local',
           password: 'admin123',
           phone: '0000000000',
           role: 'customer',
@@ -130,16 +130,32 @@ const server = app.listen(PORT, () => {
 /* =========================
    Graceful Shutdown
 ========================= */
-const gracefulShutdown = () => {
+const gracefulShutdown = async () => {
   console.log('⚠️ Graceful shutdown initiated');
-  server.close(() => {
-    mongoose.connection.close(false, () => {
-      process.exit(0);
-    });
-  });
 
-  setTimeout(() => process.exit(1), 10000);
+  try {
+    server.close(async () => {
+      try {
+        await mongoose.connection.close(false);
+        console.log('✅ MongoDB connection closed');
+        process.exit(0);
+      } catch (err) {
+        console.error('❌ Error closing MongoDB connection:', err);
+        process.exit(1);
+      }
+    });
+  } catch (err) {
+    console.error('❌ Shutdown error:', err);
+    process.exit(1);
+  }
+
+  // Force exit if shutdown hangs
+  setTimeout(() => {
+    console.error('⏱ Force shutdown');
+    process.exit(1);
+  }, 10000);
 };
 
 process.on('SIGTERM', gracefulShutdown);
 process.on('SIGINT', gracefulShutdown);
+
