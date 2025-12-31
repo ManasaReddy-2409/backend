@@ -1,0 +1,11 @@
+PORT=5000
+# Local MongoDB (development)
+MONGODB_URI=mongodb://localhost:27017/helpmeout
+
+# Or MongoDB Atlas (cloud) - example connection string template:
+# mongodb+srv://<username>:<password>@<cluster>.mongodb.net/helpmeout?retryWrites=true&w=majority
+# If password includes special characters, URL-encode them (e.g. @ -> %40)
+
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
+NODE_ENV=development
+
